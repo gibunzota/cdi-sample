@@ -1,0 +1,28 @@
+group 'cdi'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'application'
+
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+mainClassName = "akahane.MyApplication"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile group: 'org.jboss.weld.se', name: 'weld-se-core', version: '2.3.4.Final'
+}
+
+task copyResources(type: Copy) {
+    from "${projectDir}/src/main/resources"
+    into "${buildDir}/classes/main"
+}
+processResources.dependsOn copyResources
