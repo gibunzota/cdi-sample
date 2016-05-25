@@ -11,18 +11,24 @@ import javax.inject.Inject;
 
 public class MyApplication {
     public static void main(String[] args) {
+        //DIコンテナの初期化
         Weld weld = new Weld();
         WeldContainer container = weld.initialize();
         MyApplication app = container.instance().select(MyApplication.class).get();
+
+        //処理実行
         app.run();
+
+        //終了処理
         weld.shutdown();
     }
 
 
     @Inject
-    private Speaker speaker;
+    private FeedManager manager;
 
     public void run() {
-        speaker.speak();
+
+        manager.output("");
     }
 }
