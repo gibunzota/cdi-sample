@@ -8,48 +8,50 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 /**
  * Created by n.akahane on 2016/05/25.
  */
-@ApplicationScoped
 public class FeedManager {
 
-    @Inject
     private Converter converter;
-
-    @Inject
     private Writer writer;
 
-    public void output(String url){
+    public FeedManager(){
+        ConverterFactory converterFactory = new ConverterFactory();
+        converter = converterFactory.create();
 
+        WriterFactory writerFactory = new WriterFactory();
+        writer = writerFactory.create();
+    }
 
+    public void output(String url) {
 
+        String data = getFeedData(url);
+
+        writer.write(converter.convert(data));
+    }
+
+    private String getFeedData(String url) {
+        String data = null;
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            HttpGet getMethod = new HttpGet("http://localhost:8080/get?param=value");
+            HttpGet getMethod = new HttpGet(url);
 
             try (CloseableHttpResponse response = httpClient.execute(getMethod)) {
                 if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                     HttpEntity entity = response.getEntity();
-                    System.out.println(EntityUtils.toString(entity,
-                            StandardCharsets.UTF_8));
-                }
-                else{
-                    //error
+                    data = EntityUtils.toString(entity, StandardCharsets.UTF_8);
+                } else {
+                    //エラー
+                    System.err.println("Feed Response Error");
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-
-        String hoge = converter.convert("");
+        return data;
     }
-
 
 }
