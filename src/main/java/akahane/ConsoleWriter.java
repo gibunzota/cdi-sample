@@ -6,6 +6,7 @@ package akahane;
 public class ConsoleWriter implements Writer {
     @Override
     public void write(String data) {
+        //標準出力
         System.out.println(data);
     }
 }

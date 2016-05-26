@@ -1,15 +1,9 @@
 package akahane;
 
-/**
- * Created by n.akahane on 2016/05/24.
- */
-
-public class MyApplication {
+public class FeedApplication {
     public static void main(String[] args) {
-
         //処理実行
         run();
-
     }
 
     public static void run() {

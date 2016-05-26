@@ -11,27 +11,34 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-/**
- * Created by n.akahane on 2016/05/25.
- */
 public class FeedManager {
 
     private Converter converter;
     private Writer writer;
 
     public FeedManager(){
+        //Converterのインスタンスをセット
         ConverterFactory converterFactory = new ConverterFactory();
         converter = converterFactory.create();
 
+        //Writerのインスタンスをセット
         WriterFactory writerFactory = new WriterFactory();
         writer = writerFactory.create();
     }
 
     public void output(String url) {
 
-        String data = getFeedData(url);
+        try {
+            //Feedを取得
+            String data = getFeedData(url);
 
-        writer.write(converter.convert(data));
+            //変換して出力
+            writer.write(converter.convert(data));
+        }
+        catch (Exception e){
+            //エラー出力
+            e.printStackTrace();
+        }
     }
 
     private String getFeedData(String url) {

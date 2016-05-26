@@ -6,18 +6,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by n.akahane on 2016/05/25.
- */
-
 public class ReplaceConverter implements Converter {
     @Override
     public String convert(String data) {
-
+        //Feedからエントリーを取り出して置換
         return getEntryList(data).replace("intarfrm", "*****");
     }
 
     private String getEntryList(String data) {
+        //FeedのXMLからエントリーを抽出
         StringBuilder sb = new StringBuilder();
 
         try {
@@ -28,13 +25,15 @@ public class ReplaceConverter implements Converter {
             xPath.setNamespaceURIs(namespaceUris);
 
             List nodes = xPath.selectNodes(document);
-            nodes.stream().filter(object -> object instanceof Element).forEach(object -> {
-                sb.append(
-                        String.format("%s : %s\n",
-                                ((Element) object).element("title").getText(),
-                                ((Element) object).element("link").attribute("href").getValue())
-                );
-            });
+            nodes.stream()
+                    .filter(object -> object instanceof Element)
+                    .forEach(object -> {
+                        String entry =
+                                String.format("%s : %s\n",
+                                        ((Element) object).element("title").getText(),
+                                        ((Element) object).element("link").attribute("href").getValue());
+                        sb.append(entry);
+                    });
         } catch (DocumentException e) {
             e.printStackTrace();
         }

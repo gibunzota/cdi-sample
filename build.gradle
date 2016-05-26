@@ -1,5 +1,5 @@
-group 'cdi'
-version '1.0-SNAPSHOT'
+group 'feedapp'
+version '1.0'
 
 apply plugin: 'java'
 apply plugin: 'idea'
@@ -10,7 +10,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
-mainClassName = "akahane.MyApplication"
+mainClassName = "akahane.FeedApplication"
 
 repositories {
     mavenCentral()
